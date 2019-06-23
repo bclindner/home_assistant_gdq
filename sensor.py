@@ -2,7 +2,7 @@ from homeassistant.helpers.entity import Entity
 import urllib.request as request
 import re
 
-regex = re.compile("Donation Total:\n\$([0-9\.]+) ")
+regex = re.compile("Donation Total:\n\$([0-9\.,]+) ")
 
 def getDonationTotal(event):
     """
@@ -20,7 +20,7 @@ def getDonationTotal(event):
         html = response.read().decode('utf-8')
     total = regex.search(html)
     if total:
-        return total.group(1)
+        return total.group(1).replace(',','')
     else:
         raise Exception("Failed to get GDQ donation total!")
 
